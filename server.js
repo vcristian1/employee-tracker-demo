@@ -1,6 +1,7 @@
 //Packages
 const express = require("express");
 const mysql2 = require("mysql2");
+const inquirer = require("inquirer");
 
 const PORT = process.env.PORT || 3001;
 //Initialize our app saving it to the express method.
