@@ -1,18 +1,15 @@
-DROP DATABASE IF EXISTS company_db
+DROP DATABASE IF EXISTS company_db;
 -- Creates the "company_db" database --
-CREATE DATABASE company_db
+CREATE DATABASE company_db;
 
--- Create 3 tables for Department, Role, and Employee 
-
--- Department
--- id: INT PRIMARY KEY
--- name: VARCHAR(30) to hold department name
+-- Makes it so all of the following code will affect company_db --
+USE company_db
 
 CREATE TABLE department (
   -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
-  id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
   -- Makes a string column called "name" which cannot contain null --
-  name VARCHAR(30) NOT NULL
+    name VARCHAR(30) NOT NULL
 );
 
 -- role
@@ -23,11 +20,13 @@ CREATE TABLE department (
 
 CREATE TABLE role (
   -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
-  id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
   -- Makes a string column called "name" which cannot contain null --
-  title VARCHAR(30) NOT NULL
-  salary DECIMAL NOT NULL
-  department_id: INT NOT NULL
+    title VARCHAR(30) NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,
+    department_id INT,
+    FOREIGN KEY(department_id)
+    REFERENCES department(id)
 );
 
 -- employee
@@ -39,13 +38,18 @@ CREATE TABLE role (
 
 CREATE TABLE employee (
   -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
-  id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
   -- Makes a string column called "name" which cannot contain null --
-  first_name VARCHAR(30) NOT NULL
-  last_name VARCHAR(30) NOT NULL
-  role_id: INT
-  manager_id: INT
+    first_name VARCHAR(30),
+    last_name VARCHAR(30),
+    role_id INT NOT NULL,
+    manager_id INT,
+
+    FOREIGN KEY(role_id)
+    REFERENCES role(id),
+
+    FOREIGN KEY(manager_id)
+    REFERENCES employee(id)
 );
 
--- Makes it so all of the following code will affect company_db --
-USE company_db
+
