@@ -91,7 +91,7 @@ function viewEmployees () {
         console.log("|")
         console.log(res)
         console.log("|")
-        //Takes the user back to the initial prompt as they have viewed all employees at this point
+        //Takes the user back to the initial prompt as they have viewed all employees at this
         addPrompts();
 
     })
