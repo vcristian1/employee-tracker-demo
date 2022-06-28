@@ -12,7 +12,14 @@ app.use(express.urlencoded ({extended: false}));
 app.use(express.json());
 
 //Connect to a database
-
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    // MySQL Password
+    password: '',
+    //Database
+    database: 'company_db'
+});
 
 //GET/POST/DELETE Routes
 
