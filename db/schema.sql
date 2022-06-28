@@ -10,7 +10,7 @@ CREATE DATABASE company_db
 
 CREATE TABLE department (
   -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
-  id INT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   -- Makes a string column called "name" which cannot contain null --
   name VARCHAR(30) NOT NULL
 );
@@ -23,7 +23,7 @@ CREATE TABLE department (
 
 CREATE TABLE role (
   -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
-  id INT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   -- Makes a string column called "name" which cannot contain null --
   title VARCHAR(30) NOT NULL
   salary DECIMAL NOT NULL
@@ -39,7 +39,7 @@ CREATE TABLE role (
 
 CREATE TABLE employee (
   -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
-  id INT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   -- Makes a string column called "name" which cannot contain null --
   first_name VARCHAR(30) NOT NULL
   last_name VARCHAR(30) NOT NULL
@@ -49,6 +49,3 @@ CREATE TABLE employee (
 
 -- Makes it so all of the following code will affect company_db --
 USE company_db
-
-
-
