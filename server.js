@@ -21,8 +21,15 @@ const connection = mysql.createConnection({
     database: 'company_db'
 });
 
-//GET/POST/DELETE Routes
+connection.connect(function(err){
+    // connected! unless `err` is set if so throw err
+    if (err) throw err;
+    //start is the function which will begin to run the inquirer prompts beginning with
+    //the list "what would you like to do?""
+    start();
+});
 
+//GET/POST/DELETE Routes
 
 //Listen on PORT 
 app.listen(PORT, () => {console.log(`Serving running on PORT ${PORT}`)});
