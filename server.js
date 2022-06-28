@@ -27,8 +27,13 @@ connection.connect(function(err){
     if (err) throw err;
     //start is the function which will begin to run the inquirer prompts beginning with
     //the list "what would you like to do?""
-    addPrompts();
+    welcome();
 });
+
+function welcome () {
+    console.log(`Employee Tracker Deploying...`)
+    addPrompts();
+}
 
 //Function for inquirer prompts below
 function addPrompts () {
@@ -74,6 +79,21 @@ function addPrompts () {
         if (choices === "Quit") {
             connection.end();
         };
+    })
+}
+
+function viewEmployees () {
+    const sqlQuery = `SELECT *
+    FROM employee;`;
+    connection.query(sqlQuery, (err, res) => {
+        if (err) throw err;
+
+        console.log("|")
+        console.log(res)
+        console.log("|")
+        //Takes the user back to the initial prompt as they have viewed all employees at this point
+        addPrompts();
+
     })
 }
 
