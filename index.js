@@ -1,13 +1,14 @@
 //Required Packages
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
+const consoleTable = require("console.table")
 
 //Connect to a database
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     // MySQL Password
-    password: 'Excel0223!',
+    password: '',
     //Database
     database: 'company_db'
 });
@@ -21,12 +22,19 @@ connection.connect(function(err){
 });
 
 function welcome () {
-    console.log(`Employee Tracker Deploying...`)
+    console.log(`.---------------------------------------------.`)
+    console.log(`|                                             |`)
+    console.log(`|                                             |`)
+    console.log(`|       ..Employee Tracker Deployed..         |`)
+    console.log(`|                                             |`)
+    console.log(`|                                             |`)
+    console.log(`'---------------------------------------------'`)
+    
     addPrompts();
 }
 
 //Function for inquirer prompts below
-function addPrompts () {
+const addPrompts = () => {
     inquirer.prompt({
         name: "action",
         type: "list",
@@ -72,18 +80,19 @@ function addPrompts () {
     })
 }
 
-function viewEmployees () {
-    const sqlQuery = `SELECT *
-    FROM employee;`;
-    connection.query(sqlQuery, (err, res) => {
-        if (err) throw err;
+viewEmployees = () => {
+    console.log(`Viewing All Employees!`)
+    const sqlQuery = `SELECT * 
+    FROM employee;`
 
-        console.log("|")
-        console.log(res)
-        console.log("|")
+    connection.query(sqlQuery, function (err, res) {
+        if (err) throw err;
+        console.log("\n")
+        console.table(res)
+        console.log("\n")
         //Takes the user back to the initial prompt as they have viewed all employees at
         addPrompts();
 
-    })
+    });
 }
 
