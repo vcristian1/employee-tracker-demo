@@ -1,5 +1,5 @@
--- Pre-populate database below
 USE company_db;
+
 INSERT INTO department (name)
 VALUES
     ("Engineering"),
@@ -23,15 +23,15 @@ VALUES
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
-    ("John", "Greene", 1),
-    ("David", "Garcia", 2),
-    ("Chris", "Pawlowski", 3),
-    ("Craig", "Culbert", 4),
-    ("Michael", "Honeycutt", 5),
-    ("Daniel", "Aarnesss", 6),
-    ("Robert", "DeLuca", 7),
-    ("Ozzy", "Cardenas", 8),
-    ("Bobby", "Stitt", 9);
+    ("John", "Greene", 1, null),
+    ("David", "Garcia", 2, null),
+    ("Chris", "Pawlowski", 3, null),
+    ("Craig", "Culbert", 4, null),
+    ("Michael", "Honeycutt", 5, null),
+    ("Daniel", "Aarnesss", 6, null),
+    ("Robert", "DeLuca", 7, null),
+    ("Ozzy", "Cardenas", 8, null),
+    ("Bobby", "Stitt", 9, null);
     
 
 
