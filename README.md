@@ -13,6 +13,6 @@ SO THAT I can organize and plan my business accordingly.
 
 The following video shows an example of the application being used from the command line:
 
-[![A thumbnail shows the command-line employee management application with a play button overlaying the view.](./Assets/screenshot.png)](https:www.github.com/404)
+[![A thumbnail shows the command-line employee management application with a play button overlaying the view.](./assets/screenshot.png)](https:www.github.com/404)
 
 
