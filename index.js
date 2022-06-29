@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     // MySQL Password
-    password: '',
+    password: 'Excel0223!',
     //Database
     database: 'company_db'
 });
@@ -54,7 +54,7 @@ const addPrompts = () => {
         //Destructures choices 
         const { choices } = answer
         if (choices === "View all Employees") {
-            viewEmployees();
+            return viewEmployees();
         }
         if (choices === "Add an Employee") {
             addEmployee();
@@ -85,10 +85,10 @@ viewEmployees = () => {
     const sqlQuery = `SELECT * 
     FROM employee;`
 
-    connection.query(sqlQuery, function (err, res) {
+    connection.query(sqlQuery, function (err, data) {
         if (err) throw err;
         console.log("\n")
-        console.table(res)
+        console.table(data)
         console.log("\n")
         //Takes the user back to the initial prompt as they have viewed all employees at
         addPrompts();
