@@ -150,6 +150,9 @@ addEmployee = () => {
             }
         }
         ])
+        .then((answer) => {
+            console.log(answer)
+        })
     });
     console.log(`Adding an Employee!`)
 }
