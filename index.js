@@ -35,53 +35,54 @@ function welcome () {
 
 //Function for inquirer prompts below
 const addPrompts = () => {
-    inquirer.prompt({
-        name: "action",
-        type: "list",
-        message: "What would you like to do?",
-        choices: [
-            "View all Employees",
-            "Add an Employee",
-            "Update an Employee Role",
-            "View all Roles",
-            "Add a Role",
-            "View all Departments",
-            "Add a Department",
-            "Quit"
-        ]
-    })
-    .then((answer) => {
-        //Destructures choices 
-        const { choices } = answer
-        if (choices === "View all Employees") {
-            return viewEmployees();
+    inquirer.prompt([
+        {
+            name: "action",
+            type: "list",
+            message: "What would you like to do?",
+            choices: [
+                "View all Employees",
+                "Add an Employee",
+                "Update an Employee Role",
+                "View all Roles",
+                "Add a Role",
+                "View all Departments",
+                "Add a Department",
+                "Quit"
+            ]
         }
-        if (choices === "Add an Employee") {
+    ])
+    .then((answer) => {
+ 
+        if (answer.action === "View all Employees") {
+            viewEmployees();
+        }
+        if (answer.action === "Add an Employee") {
             addEmployee();
         }
-        if (choices === "Update an Employee Role") {
+        if (answer.action === "Update an Employee Role") {
             updateEmployeeRole();
         }
-        if (choices === "View all Roles") {
+        if (answer.action === "View all Roles") {
             viewRoles();
         }
-        if (choices === "Add a Role") {
+        if (answer.action === "Add a Role") {
             addRole();
         }
-        if (choices === "View all Departments") {
+        if (answer.action === "View all Departments") {
             viewDepartments();
         }
-        if (choices === "Add a Department") {
+        if (answer.action === "Add a Department") {
             addDepartment();
         }
-        if (choices === "Quit") {
+        if (answer.action === "Quit") {
             connection.end();
         };
+        
     })
 }
 
 viewEmployees = () => {
-    console.log(`Viewing All Employees!`)
     const sqlQuery = `SELECT * 
     FROM employee;`
 
@@ -90,9 +91,65 @@ viewEmployees = () => {
         console.log("\n")
         console.table(data)
         console.log("\n")
+        console.log(`Viewing All Employees!`)
         //Takes the user back to the initial prompt as they have viewed all employees at
         addPrompts();
 
     });
 }
 
+viewRoles = () => {
+    const sqlQuery = `SELECT * 
+    FROM role;`
+
+    connection.query(sqlQuery, function (err, data) {
+        if (err) throw err;
+        console.log("\n")
+        console.table(data)
+        console.log("\n")
+        console.log(`Viewing All Roles!`)
+        //Takes the user back to the initial prompt as they have viewed all employees at
+        addPrompts();
+
+    });
+}
+
+viewDepartments = () => {
+    const sqlQuery = `SELECT * 
+    FROM department;`
+
+    connection.query(sqlQuery, function (err, data) {
+        if (err) throw err;
+        console.log("\n")
+        console.table(data)
+        console.log("\n")
+        console.log(`Viewing All Departments!`)
+        //Takes the user back to the initial prompt as they have viewed all employees at
+        addPrompts();
+
+    });
+}
+
+addEmployee = () => {
+    const sqlQuery = `SELECT * from role`
+    connection.query(sqlQuery, function (err, results) {
+        if (err) throw err;
+        inquirer.prompt([
+        {
+            name: "role_id",
+            type: "list",
+            message: "What is the employees's role?",
+            choices: getRoles = () => {
+                let roleChoices = []
+                    results.forEach(results => {
+                        roleChoices.push(
+                            results.title
+                        );
+                    })
+                return roleChoices;
+            }
+        }
+        ])
+    });
+    console.log(`Adding an Employee!`)
+}
