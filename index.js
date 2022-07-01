@@ -130,6 +130,27 @@ viewDepartments = () => {
     });
 }
 
+addDepartment = () => {
+    inquirer.prompt([
+        {
+            name: "department",
+            type: "input",
+            message: "What is the Department's name?",
+        }
+    ])
+    .then((answer) => {
+    const sqlQuery = `INSERT INTO department (name) VALUES (?)`
+    connection.query(sqlQuery, answer.department, function (err, results) {
+        if (err) throw err;
+        
+    });
+    viewDepartments();
+    addPrompts();
+    })
+    
+}
+
+//Not finished
 addEmployee = () => {
     const sqlQuery = `SELECT * from role`
     connection.query(sqlQuery, function (err, results) {
