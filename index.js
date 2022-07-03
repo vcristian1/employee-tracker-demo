@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     // MySQL Password
-    password: 'Excel0223!',
+    password: '',
     //Database
     database: 'company_db'
 });
@@ -136,6 +136,24 @@ viewDepartments = () => {
     });
 }
 
+viewNewAddedDepartment = () => {
+    const sqlQuery = `SELECT * 
+    FROM department;`
+
+    connection.query(sqlQuery, function (err, data) {
+        if (err) throw err;
+        console.log("\n")
+        console.table(data)
+        console.log(`.---------------------------------------------.`)
+        console.log(`|          ...Added New Department...         |`)
+        console.log(`|                                             |`)
+        console.log(`'---------------------------------------------'`)
+        //Takes the user back to the initial prompt as they have viewed all employees at
+        addPrompts();
+
+    });
+}
+
 addDepartment = () => {
     inquirer.prompt([
         {
@@ -150,7 +168,7 @@ addDepartment = () => {
         if (err) throw err;
         
     });
-    viewDepartments();
+    viewNewAddedDepartment();
     addPrompts();
     })
 }
