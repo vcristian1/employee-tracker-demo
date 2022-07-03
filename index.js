@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     // MySQL Password
-    password: '',
+    password: 'Excel0223!',
     //Database
     database: 'company_db'
 });
@@ -106,6 +106,27 @@ viewEmployees = () => {
     });
 }
 
+viewNewAddedEmployee = () => {
+    // variable sqlQuery is set equal to a string of text which is a query which selects everything from the employee table in company_db using mysql syntax.
+    const sqlQuery = `SELECT * 
+    FROM employee;`
+
+    //then we send the sqlQuery variable (which holds a query) to the company_db, if successful the console will render the data in 
+    //the employee table using console.table, and logs a message to the user confiming.
+    connection.query(sqlQuery, function (err, data) {
+        if (err) throw err;
+        console.log("\n")
+        console.table(data)
+        console.log(`.---------------------------------------------.`)
+        console.log(`|          ...Added New Employee...           |`)
+        console.log(`|                                             |`)
+        console.log(`'---------------------------------------------'`)
+        //Takes the user back to the initial prompt as they have viewed all employees at
+        addPrompts();
+
+    });
+}
+
 viewRoles = () => {
     // variable sqlQuery is set equal to a string of text which is a query which selects everything from the role table in company_db using mysql syntax.
     const sqlQuery = `SELECT * 
@@ -183,7 +204,7 @@ addDepartment = () => {
         if (err) throw err;
         
     });
-    //Runs a similar function to viewDepartments() but instead console logs "Added New Department" instead of "Viewing All Departments"
+    //Runs viewNewAddedDepartment() to confirm the user has added a department successfully, and brings the user back to the initial prompt
     viewNewAddedDepartment();
     //brings the user back to the initial prompt
     addPrompts();
@@ -219,12 +240,13 @@ addEmployee = () => {
                 //Prompts the use to select what the role of the new employee is an to remember the role ID selected as well.
                 name: "role",
                 type: "list",
-                message: "Please select the employees role, and remember their role ID. (ie: Accountant is 1)",
+                message: "Please select the Employee's role, and remember their role ID. (ie: Accountant is 1, CPA is 2)",
                 choices: function getRoles () {
                                 let roleChoices = []
                                     results.forEach(results => {
                                         roleChoices.push(
                                             results.title
+                                            
                                         );
                                     })
                                 return roleChoices;
@@ -248,8 +270,8 @@ addEmployee = () => {
             console.log()
                         
         });
-        //Reruns viewEmployees() to confirm the user has added an employee successfully, and brings the user back to the initial prompt
-        viewEmployees();
+        //Runs viewNewAddedEmployee() to confirm the user has added an employee successfully, and brings the user back to the initial prompt
+        viewNewAddedEmployee();
         addPrompts();
         })
     });
