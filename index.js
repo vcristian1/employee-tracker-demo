@@ -206,8 +206,7 @@ addDepartment = () => {
     });
     //Runs viewNewAddedDepartment() to confirm the user has added a department successfully, and brings the user back to the initial prompt
     viewNewAddedDepartment();
-    //brings the user back to the initial prompt
-    addPrompts();
+    
     })
 }
 
@@ -240,12 +239,12 @@ addEmployee = () => {
                 //Prompts the use to select what the role of the new employee is an to remember the role ID selected as well.
                 name: "role",
                 type: "list",
-                message: "Please select the Employee's role, and remember their role ID. (ie: Accountant is 1, CPA is 2)",
+                message: "Please select the Employee's role",
                 choices: function getRoles () {
                                 let roleChoices = []
                                     results.forEach(results => {
                                         roleChoices.push(
-                                            results.title
+                                            `ID:${results.id} ${results.title}`
                                             
                                         );
                                     })
@@ -256,23 +255,19 @@ addEmployee = () => {
                 //prompts the user on what was the role ID of the role selected in the previous prompt for the new employee we are adding.
                 name: "role_id",
                 type: "input",
-                message: "What was the Employee's role ID selected?"
+                message: "What is the Role ID of the new Employee?"
             },
         ])
         .then((answer) => { 
-        //Log in the console everything inputted by the user.
-        console.log(answer)
         //Inserts the query, and values received from the user (first_name, last_name, role_id, manager_id) and sends to the company_db
         const sqlQuery = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`
         const values = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id]
         connection.query(sqlQuery, values, function (err, results) {
             if (err) throw err;
-            console.log()
                         
         });
         //Runs viewNewAddedEmployee() to confirm the user has added an employee successfully, and brings the user back to the initial prompt
         viewNewAddedEmployee();
-        addPrompts();
         })
     });
 }
