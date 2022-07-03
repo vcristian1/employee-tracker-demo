@@ -13,11 +13,10 @@ const connection = mysql.createConnection({
     database: 'company_db'
 });
 
+
 connection.connect(function(err){
-    // connected! unless `err` is set if so throw err
     if (err) throw err;
-    //start is the function which will begin to run the inquirer prompts beginning with
-    //the list "what would you like to do?""
+    //If no errors and you succesfully connect, the console logs a message to the user confirming they have deployed the employee tracker.
     welcome();
 });
 
@@ -29,7 +28,7 @@ function welcome () {
     console.log(`|                                             |`)
     console.log(`|                                             |`)
     console.log(`'---------------------------------------------'`)
-    
+    //function which runs the intial list prompt asking the user what they would like to do.
     addPrompts();
 }
 
@@ -37,6 +36,7 @@ function welcome () {
 const addPrompts = () => {
     inquirer.prompt([
         {
+            //Named action as this list prompt has choices which run specific functions.
             name: "action",
             type: "list",
             message: "What would you like to do?",
@@ -53,10 +53,13 @@ const addPrompts = () => {
         }
     ])
     .then((answer) => {
- 
+        //if an answer choice has been selected by the user, and the string of the choice selected is equivalent to "View All Employees", 
+        //then viewEmployees() runs.
         if (answer.action === "View all Employees") {
             viewEmployees();
         }
+        //if an answer choice has been selected by the user, and the string of the choice selected is equivalent to "Add an Employee", 
+        //then addEmployee() runs.
         if (answer.action === "Add an Employee") {
             addEmployee();
         }
@@ -83,9 +86,12 @@ const addPrompts = () => {
 }
 
 viewEmployees = () => {
+    // variable sqlQuery is set equal to a string of text which is a query which selects everything from the employee table in company_db using mysql syntax.
     const sqlQuery = `SELECT * 
     FROM employee;`
 
+    //then we send the sqlQuery variable (which holds a query) to the company_db, if successful the console will render the data in 
+    //the employee table using console.table, and logs a message to the user confiming.
     connection.query(sqlQuery, function (err, data) {
         if (err) throw err;
         console.log("\n")
@@ -101,9 +107,11 @@ viewEmployees = () => {
 }
 
 viewRoles = () => {
+    // variable sqlQuery is set equal to a string of text which is a query which selects everything from the role table in company_db using mysql syntax.
     const sqlQuery = `SELECT * 
     FROM role;`
-
+    //then we send the sqlQuery variable (which holds a query) to the company_db, if successful the console will render the data in 
+    //the role table in the database company_db using console.table, and logs a message to the user confirming.
     connection.query(sqlQuery, function (err, data) {
         if (err) throw err;
         console.log("\n")
@@ -119,9 +127,11 @@ viewRoles = () => {
 }
 
 viewDepartments = () => {
+    // variable sqlQuery is set equal to a string of text which is a query which selects everything from the department table in company_db using mysql syntax.
     const sqlQuery = `SELECT * 
     FROM department;`
-
+    //then we send the sqlQuery variable (which holds a query) to the company_db, if successful the console will render the data in 
+    //the department table in the database company_db using console.table, and logs a message to the user confirming.
     connection.query(sqlQuery, function (err, data) {
         if (err) throw err;
         console.log("\n")
@@ -137,9 +147,12 @@ viewDepartments = () => {
 }
 
 viewNewAddedDepartment = () => {
+    // variable sqlQuery is set equal to a string of text which is a query which selects everything from the department table in company_db using mysql syntax.
     const sqlQuery = `SELECT * 
     FROM department;`
 
+    //then we send the sqlQuery variable (which holds a query) to the company_db. If successful the console will render the data from 
+    //the department table in the database company_db using console.table, and logs a message to the user confirming a new Department is added.
     connection.query(sqlQuery, function (err, data) {
         if (err) throw err;
         console.log("\n")
@@ -153,27 +166,31 @@ viewNewAddedDepartment = () => {
 
     });
 }
-
+//Adds a new department to the department table in company_db
 addDepartment = () => {
     inquirer.prompt([
         {
+            //prompts the user to input the name of the department they wish to add
             name: "department",
             type: "input",
             message: "What is the Department's name?",
         }
     ])
     .then((answer) => {
+    //then we send the sqlQuery variable (which holds a query), and the value inputted by the user to the company_db
     const sqlQuery = `INSERT INTO department (name) VALUES (?)`
     connection.query(sqlQuery, answer.department, function (err, results) {
         if (err) throw err;
         
     });
+    //Runs a similar function to viewDepartments() but instead console logs "Added New Department" instead of "Viewing All Departments"
     viewNewAddedDepartment();
+    //brings the user back to the initial prompt
     addPrompts();
     })
 }
 
-//Not finished
+//Adds a new employee to the employee table saving the values the user inputs after answering the prompts
 addEmployee = () => {
     //Selects the role.title, role.salary, and role.department_id from the role table.
     const sqlQuery = `Select * from role`
@@ -181,42 +198,49 @@ addEmployee = () => {
         if (err) throw err;
         inquirer.prompt([
             {
+                //prompts the user on what the first name of the new employee being added is
                 name: "first_name",
                 type: "input",
                 message: "What is the Employee's first name?"
             },
             {
+                //prompts the user on what the last name of the new employee being added is
                 name: "last_name",
                 type: "input",
                 message: "What is the Employee's last name?"
             },
             {
+                //prompts the user on what the manager id of the new employee being added is
                 name: "manager_id",
                 type: "input",
                 message: "What is the Employee's manager ID?"
             },
-            // {
-            //     name: "role_id",
-            //     type: "list",
-            //     message: "What is the Employee's role?",
-            //     choices: function getRoles () {
-            //                     let roleChoices = []
-            //                         results.forEach(results => {
-            //                             roleChoices.push(
-            //                                 results.title
-            //                             );
-            //                         })
-            //                     return roleChoices;
-            //                 }
-            // },
             {
+                //Prompts the use to select what the role of the new employee is an to remember the role ID selected as well.
+                name: "role",
+                type: "list",
+                message: "Please select the employees role, and remember their role ID. (ie: Accountant is 1)",
+                choices: function getRoles () {
+                                let roleChoices = []
+                                    results.forEach(results => {
+                                        roleChoices.push(
+                                            results.title
+                                        );
+                                    })
+                                return roleChoices;
+                            }
+            },
+            {
+                //prompts the user on what was the role ID of the role selected in the previous prompt for the new employee we are adding.
                 name: "role_id",
                 type: "input",
-                message: "What is the Employee's role ID?"
+                message: "What was the Employee's role ID selected?"
             },
         ])
         .then((answer) => { 
+        //Log in the console everything inputted by the user.
         console.log(answer)
+        //Inserts the query, and values received from the user (first_name, last_name, role_id, manager_id) and sends to the company_db
         const sqlQuery = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`
         const values = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id]
         connection.query(sqlQuery, values, function (err, results) {
@@ -224,6 +248,7 @@ addEmployee = () => {
             console.log()
                         
         });
+        //Reruns viewEmployees() to confirm the user has added an employee successfully, and brings the user back to the initial prompt
         viewEmployees();
         addPrompts();
         })
