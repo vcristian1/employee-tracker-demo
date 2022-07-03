@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     // MySQL Password
-    password: '',
+    password: 'Excel0223!',
     //Database
     database: 'company_db'
 });
@@ -161,7 +161,6 @@ addEmployee = () => {
     const sqlQuery = `Select * from role`
     connection.query(sqlQuery, function (err, results) {
         if (err) throw err;
-        const {role} = 
         inquirer.prompt([
             {
                 name: "first_name",
@@ -178,32 +177,37 @@ addEmployee = () => {
                 type: "input",
                 message: "What is the Employee's manager ID?"
             },
+            // {
+            //     name: "role_id",
+            //     type: "list",
+            //     message: "What is the Employee's role?",
+            //     choices: function getRoles () {
+            //                     let roleChoices = []
+            //                         results.forEach(results => {
+            //                             roleChoices.push(
+            //                                 results.title
+            //                             );
+            //                         })
+            //                     return roleChoices;
+            //                 }
+            // },
             {
                 name: "role_id",
-                type: "list",
-                message: "What is the Employee's role?",
-                choices: function getRoles () {
-                                let roleChoices = []
-                                    results.forEach(results => {
-                                        roleChoices.push(
-                                            results.title
-                                        );
-                                    })
-                                return roleChoices;
-                            }
+                type: "input",
+                message: "What is the Employee's role ID?"
             },
         ])
-        .then((answer) => {
+        .then((answer) => { 
         console.log(answer)
-        addPrompts();
-        // const sqlQuery = `INSERT INTO Employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`
-        // connection.query(sqlQuery, answer.first_name, answer.last_name, answer.role_id, answer.manager_id, function (err, results) {
-        //     if (err) throw err;
+        const sqlQuery = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`
+        const values = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id]
+        connection.query(sqlQuery, values, function (err, results) {
+            if (err) throw err;
+            console.log()
                         
-        // });
-        // viewEmployees();
-        // addPrompts();
-        // })
+        });
+        viewEmployees();
+        addPrompts();
         })
     });
 }
