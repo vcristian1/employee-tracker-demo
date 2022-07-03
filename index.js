@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     // MySQL Password
-    password: 'Excel0223!',
+    password: '',
     //Database
     database: 'company_db'
 });
@@ -20,7 +20,7 @@ connection.connect(function(err){
     welcome();
 });
 
-function welcome () {
+welcome = () => {
     console.log(`.---------------------------------------------.`)
     console.log(`|                                             |`)
     console.log(`|                                             |`)
@@ -81,15 +81,12 @@ const addPrompts = () => {
         if (answer.action === "Quit") {
             connection.end();
         };
-        
     })
 }
 
 viewEmployees = () => {
     // variable sqlQuery is set equal to a string of text which is a query which selects everything from the employee table in company_db using mysql syntax.
-    const sqlQuery = `SELECT * 
-    FROM employee;`
-
+    const sqlQuery = `SELECT *  FROM employee;`
     //then we send the sqlQuery variable (which holds a query) to the company_db, if successful the console will render the data in 
     //the employee table using console.table, and logs a message to the user confiming.
     connection.query(sqlQuery, function (err, data) {
@@ -102,15 +99,12 @@ viewEmployees = () => {
         console.log(`'---------------------------------------------'`)
         //Takes the user back to the initial prompt as they have viewed all employees at
         addPrompts();
-
     });
 }
 
 viewNewAddedEmployee = () => {
     // variable sqlQuery is set equal to a string of text which is a query which selects everything from the employee table in company_db using mysql syntax.
-    const sqlQuery = `SELECT * 
-    FROM employee;`
-
+    const sqlQuery = `SELECT * FROM employee;`
     //then we send the sqlQuery variable (which holds a query) to the company_db, if successful the console will render the data in 
     //the employee table using console.table, and logs a message to the user confiming.
     connection.query(sqlQuery, function (err, data) {
@@ -123,14 +117,12 @@ viewNewAddedEmployee = () => {
         console.log(`'---------------------------------------------'`)
         //Takes the user back to the initial prompt as they have viewed all employees at
         addPrompts();
-
     });
 }
 
 viewRoles = () => {
     // variable sqlQuery is set equal to a string of text which is a query which selects everything from the role table in company_db using mysql syntax.
-    const sqlQuery = `SELECT * 
-    FROM role;`
+    const sqlQuery = `SELECT * FROM role;`
     //then we send the sqlQuery variable (which holds a query) to the company_db, if successful the console will render the data in 
     //the role table in the database company_db using console.table, and logs a message to the user confirming.
     connection.query(sqlQuery, function (err, data) {
@@ -143,14 +135,12 @@ viewRoles = () => {
         console.log(`'---------------------------------------------'`)
         //Takes the user back to the initial prompt as they have viewed all employees at
         addPrompts();
-
     });
 }
 
 viewDepartments = () => {
     // variable sqlQuery is set equal to a string of text which is a query which selects everything from the department table in company_db using mysql syntax.
-    const sqlQuery = `SELECT * 
-    FROM department;`
+    const sqlQuery = `SELECT * FROM department;`
     //then we send the sqlQuery variable (which holds a query) to the company_db, if successful the console will render the data in 
     //the department table in the database company_db using console.table, and logs a message to the user confirming.
     connection.query(sqlQuery, function (err, data) {
@@ -163,15 +153,12 @@ viewDepartments = () => {
         console.log(`'---------------------------------------------'`)
         //Takes the user back to the initial prompt as they have viewed all employees at
         addPrompts();
-
     });
 }
 
 viewNewAddedDepartment = () => {
     // variable sqlQuery is set equal to a string of text which is a query which selects everything from the department table in company_db using mysql syntax.
-    const sqlQuery = `SELECT * 
-    FROM department;`
-
+    const sqlQuery = `SELECT * FROM department;`
     //then we send the sqlQuery variable (which holds a query) to the company_db. If successful the console will render the data from 
     //the department table in the database company_db using console.table, and logs a message to the user confirming a new Department is added.
     connection.query(sqlQuery, function (err, data) {
@@ -202,11 +189,9 @@ addDepartment = () => {
     const sqlQuery = `INSERT INTO department (name) VALUES (?)`
     connection.query(sqlQuery, answer.department, function (err, results) {
         if (err) throw err;
-        
     });
     //Runs viewNewAddedDepartment() to confirm the user has added a department successfully, and brings the user back to the initial prompt
     viewNewAddedDepartment();
-    
     })
 }
 
@@ -264,10 +249,14 @@ addEmployee = () => {
         const values = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id]
         connection.query(sqlQuery, values, function (err, results) {
             if (err) throw err;
-                        
         });
         //Runs viewNewAddedEmployee() to confirm the user has added an employee successfully, and brings the user back to the initial prompt
         viewNewAddedEmployee();
         })
     });
+}
+
+//TO DO: Add Update Employee Role Function which updates the employees role.
+updateEmployeeRole = () => {
+
 }
