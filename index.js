@@ -256,7 +256,53 @@ addEmployee = () => {
     });
 }
 
-//TO DO: Add Update Employee Role Function which updates the employees role.
-updateEmployeeRole = () => {
 
+//Updates Employee Role which updates the employee selected role ID accordingly.
+updateEmployeeRole = () => {
+    const sqlQuery = `SELECT employee.id, employee.first_name, employee.last_name, role.id AS "role_id"
+     FROM employee, role, department WHERE department.id = role.department_id AND role.id = employee.role_id`
+    connection.query(sqlQuery, function (err, results) {
+        if (err) throw err;
+        inquirer.prompt([
+            {
+                //Prompts the user to select the employee whose role is being changed
+                name: "name",
+                type: "list",
+                message: "Please select the Employee by their name",
+                choices: 
+                            function getEmployees () {
+                                let employees = []
+                                    results.forEach(results => {
+                                        employees.push(
+                                            `${results.last_name}`
+                                        );
+                                    })
+                                return employees;
+                            }
+            },
+            {
+                //Prompts the user to select the role ID they wish to assign to the employee
+                name: "role",
+                type: "list",
+                message: "Please select the new role the Employee has received",
+                choices: function getRoles () {
+                    let roleChoices = []
+                        results.forEach(results => {
+                            roleChoices.push(
+                                `${results.id}`
+                            );
+                        })
+                    return roleChoices;
+                }
+            },
+        ])
+        .then((answer) => { 
+        let values = [answer.role, answer.name]
+        connection.query(`UPDATE employee SET role_id = ? WHERE last_name = ?`, values, function (err, results) {
+           if (err) throw err
+        });
+        viewEmployees();
+        })
+    });
 }
+
